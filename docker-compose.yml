@@ -1,0 +1,10 @@
+version: "2"
+services:
+  web:
+    image: python:3
+    ports:
+     - 80:80
+    volumes:
+      - ./web:/app/src
+    working_dir: /app/src
+    command: python3 -m http.server --bind 0.0.0.0 80
