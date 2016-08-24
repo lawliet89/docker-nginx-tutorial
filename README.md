@@ -58,6 +58,17 @@ Similarly, the `letsencrypt` container will retrieve the Let's Encrypt certifica
 challenge steps that the ACME protocol requires by writing the appropriate files to the nginx HTML volume. Then,
 it will use `docker_gen` to generate the appropriate configuration files for nginx.
 
+## Running the Nginx setup independently from other web applications
+If you want to proxy multiple web applications with the same nginx setup, you should run the web application separately
+from the nginx containers.
+
+In this case, you can use `docker-compose.nginx.yml` as a starting point.
+
+You would first have to create a network called `nginx` with `docker network create nginx` and make sure your
+applications are also on the `nginx` network.
+
+An example for how you might connect your application to the network can be found in `docker-compose.web.yml`
+
 ## Further Reading
  - [`docker_gen`](https://github.com/jwilder/docker-gen)
  - [`nginx_proxy`](https://github.com/jwilder/nginx-proxy)
