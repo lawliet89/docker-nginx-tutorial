@@ -3,6 +3,7 @@
 This repository contains an example `docker-compose.yml` file to set up an nginx reverse proxy
 with an auto-renewing [Let's Encrypt](https://letsencrypt.org/) TLS certificate for your web application.
 
+<a name="pre-requisites"></a>
 ## Pre-requisites
  - [Docker](https://docs.docker.com/engine/installation/)
  - [Docker Compose](https://docs.docker.com/compose/install/) - optional -- to run the example
@@ -11,6 +12,7 @@ with an auto-renewing [Let's Encrypt](https://letsencrypt.org/) TLS certificate 
  [volumes](https://docs.docker.com/engine/tutorials/dockervolumes/)
  - Knowledge about how [Let's Encrypt](https://letsencrypt.org/) work
 
+ <a name="submodule"></a>
 ## Submodule
 When you clone this repository, don't forget to clone the submodule too!
 
@@ -19,6 +21,7 @@ git submodule init
 git submodule update
 ```
 
+<a name="config"></a>
 ## Configuration
 To run the example `docker-compose.yml`, you first need to take `web.env.example` and fill it in with your details
 and rename it to `web.env`.
@@ -32,12 +35,14 @@ for. This host name *_must_* be publicly accessible. Enter your email address in
 If you want to create test certificates that don't have the 5 certs/week/domain limits define the `LETSENCRYPT_TEST`
 environment variable with a value of `true`.
 
+<a name="run"></a>
 ## Running `docker-compose.yml`
 To run it, simply do `docker-compose up`.
 
 Be aware that once you do this, you should take extra care of the volumes created, of which one of them holds your
 certificate and your private key!
 
+<a name="wtf"></a>
 ## What is going on!?
 Four containers are set up to orchestrate the entire affair. Namely:
 
@@ -58,6 +63,7 @@ Similarly, the `letsencrypt` container will retrieve the Let's Encrypt certifica
 challenge steps that the ACME protocol requires by writing the appropriate files to the nginx HTML volume. Then,
 it will use `docker_gen` to generate the appropriate configuration files for nginx.
 
+<a name="run-independent"></a>
 ## Running the Nginx setup independently from other web applications
 If you want to proxy multiple web applications with the same nginx setup, you should run the web application separately
 from the nginx containers.
@@ -69,6 +75,7 @@ applications are also on the `nginx` network.
 
 An example for how you might connect your application to the network can be found in `docker-compose.web.yml`
 
+<a name="read-more"></a>
 ## Further Reading
  - [`docker_gen`](https://github.com/jwilder/docker-gen)
  - [`nginx_proxy`](https://github.com/jwilder/nginx-proxy)
