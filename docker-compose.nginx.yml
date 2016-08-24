@@ -43,3 +43,6 @@ volumes:
   nginx_vhost: {}
   nginx_html: {}
   nginx_certs: {}
+networks:
+  nginx:
+    external: true
