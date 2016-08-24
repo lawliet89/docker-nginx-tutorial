@@ -9,6 +9,7 @@ with an auto-renewing [Let's Encrypt](https://letsencrypt.org/) TLS certificate 
  - A working sub-domain
  - A working knowledge of Docker, and especially about
  [volumes](https://docs.docker.com/engine/tutorials/dockervolumes/)
+ - Knowledge about how [Let's Encrypt](https://letsencrypt.org/) work
 
 ## Submodule
 When you clone this repository, don't forget to clone the submodule too!
@@ -38,3 +39,26 @@ Be aware that once you do this, you should take extra care of the volumes create
 certificate and your private key!
 
 ## What is going on!?
+Four containers are set up to orchestrate the entire affair. Namely:
+
+ - Application Web Server (in our case, the `web` service which is just a simple Python HTTP server)
+ - Nginx `nginx`
+ - Nginx Reverse Proxy Configuration generator `nginx_gen`
+ - Let's Encrypt certificate renwal and Nginx configuration generator `letsencrypt`
+
+The first two containers should be fairly self explanatory.
+
+The latter two containers make use of [`docker-gen`](https://github.com/jwilder/docker-gen) which generates nginx
+configuration files based on the Docker environment.
+
+The `nginx_gen` container listens on the Docker socket and writes configuration files for Nginx to act as the
+reverse proxy for the containers with the `VIRTUAL_HOST` environment variable.
+
+Similarly, the `letsencrypt` container will retrieve the Let's Encrypt certificate by performing the various
+challenge steps that the ACME protocol requires by writing the appropriate files to the nginx HTML volume. Then,
+it will use `docker_gen` to generate the appropriate configuration files for nginx.
+
+## Further Reading
+ - [`docker_gen`](https://github.com/jwilder/docker-gen)
+ - [`nginx_proxy`](https://github.com/jwilder/nginx-proxy)
+ - [`docker-letsencrypt-nginx-proxy-companion`](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
